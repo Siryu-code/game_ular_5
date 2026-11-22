@@ -32,12 +32,8 @@ var pewaktu = null;
 
 var keadaan = "siap";
 
-// ===== data tambahan khusus animasi =====
-
-// salinan posisi ular SEBELUM langkah terakhir (titik awal animasi)
 var ularSebelum = [];
 
-// kapan langkah terakhir terjadi (titik awal waktu animasi), dalam milidetik
 var waktuTik = 0;
 
 function buatGrid() {
@@ -107,8 +103,6 @@ function siapkanGame() {
 
     taruhApel();
 
-    // BARU: awalnya tidak ada gerakan yang sedang dianimasikan,
-    // jadi posisi "sebelum" disamakan dengan posisi sekarang
     ularSebelum = ular.slice();
     waktuTik = 0;
 
@@ -116,9 +110,6 @@ function siapkanGame() {
     perbaruiTampilan();
 }
 
-// ===== bagian menggambar =====
-
-// kotak dengan sudut membulat (pengganti border-radius di CSS)
 function gambarKotakBulat(x, y, lebar, tinggi, radius) {
     ctx.beginPath();
     ctx.moveTo(x + radius, y);
@@ -129,9 +120,6 @@ function gambarKotakBulat(x, y, lebar, tinggi, radius) {
     ctx.closePath();
     ctx.fill();
 }
-
-// (x, y) = pojok kiri atas sel di kanvas, dalam piksel
-// isi sel = ukuran sel dikurangi border 1px di tiap sisi (seperti box-sizing di CSS)
 function gambarBadan(x, y) {
     var ukuran = (ukuranSel - 2) * 0.84;
     var jarak = (ukuranSel - ukuran) / 2;
@@ -173,7 +161,6 @@ function gambarLingkaran(x, y, warna) {
     ctx.fill();
 }
 
-// progres animasi: 0 = baru mulai bergeser, 1 = sudah sampai di sel tujuan
 function hitungProgres() {
     var t = (Date.now() - waktuTik) / kecepatan;
 
@@ -184,10 +171,7 @@ function hitungProgres() {
     return t;
 }
 
-// posisi piksel segmen ke-i pada progres t.
-// segmen berjalan dari posisi lamanya (ularSebelum) ke posisi barunya (ular)
 function posisiSegmen(i, t) {
-    // kalau ular baru bertambah panjang, segmen baru berangkat dari ujung ular lama
     var indeksLama = Math.min(i, ularSebelum.length - 1);
     var dari = ularSebelum[indeksLama];
     var ke = ular[i];
@@ -203,7 +187,6 @@ function gambar() {
 
     ctx.clearRect(0, 0, papan.width, papan.height);
 
-    // 1. papan dan apel (tidak bergerak, jadi dibaca langsung dari grid)
     for (var baris = 0; baris < jumlahBaris; baris++) {
         for (var kolom = 0; kolom < jumlahKolom; kolom++) {
             var x = kolom * ukuranSel;
@@ -230,19 +213,15 @@ function gambar() {
         }
     }
 
-    // 2. ular (digambar dari posisi animasi, bukan dari grid)
     for (var i = 0; i < ular.length - 1; i++) {
         var posisi = posisiSegmen(i, t);
         gambarBadan(posisi.x, posisi.y);
     }
 
-    // kepala digambar paling akhir supaya berada di atas badan
     var posisiKepala = posisiSegmen(ular.length - 1, t);
     gambarKepala(posisiKepala.x, posisiKepala.y);
 }
 
-// gambar() sekarang dipanggil terus-menerus (sekitar 60 kali per detik),
-// bukan hanya sekali setiap langkah game
 function loopGambar() {
     gambar();
     requestAnimationFrame(loopGambar);
@@ -280,8 +259,6 @@ function langkah() {
             return;
         }
 
-        // BARU: catat posisi ular sebelum bergerak, dan kapan geraknya dimulai.
-        // dua catatan ini yang dipakai gambar() untuk menganimasikan gerakan
         ularSebelum = ular.slice();
         waktuTik = Date.now();
 
@@ -304,7 +281,6 @@ function langkah() {
             }
         }
 
-        // gambar() tidak lagi dipanggil di sini, sudah ditangani loopGambar
         perbaruiTampilan();
     } else {
         gameOver();
