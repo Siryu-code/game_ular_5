@@ -1,0 +1,66 @@
+body {
+    margin: 0;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 14px;
+    font-family: Arial, Helvetica, sans-serif;
+    background-color: rgb(11, 46, 78);
+    color: aliceblue;
+}
+
+h1 {
+    margin: 0;
+    font-size: 24px;
+    letter-spacing: 2px;
+}
+
+#info {
+    display: flex;
+    gap: 24px;
+    font-size: 14px;
+}
+
+#status {
+    padding: 2px 10px;
+    border-radius: 10px;
+    background-color: rgb(25, 77, 122);
+}
+
+#papan {
+    border: 4px solid rgb(25, 77, 122);
+    border-radius: 6px;
+    background-color: rgb(25, 77, 122);
+}
+
+#kontrol {
+    display: flex;
+    gap: 8px;
+}
+
+button {
+    padding: 4px 8px;
+    border: none;
+    border-radius: 6px;
+    font-size: 14px;
+    cursor: pointer;
+    background-color: aliceblue;
+    color: rgb(11, 46, 78);
+}
+
+button:hover {
+    background-color: rgb(204, 219, 233);
+}
+
+button:disabled {
+    background-color: rgb(147, 166, 182);
+    cursor: not-allowed;
+}
+
+#petunjuk {
+    margin: 0;
+    font-size: 12px;
+    opacity: 0.7;
+}
